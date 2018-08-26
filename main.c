@@ -67,10 +67,7 @@ year = extractInt(year, 0, 3);
 year = tenyear*10 + year;
 
 char space = ' ';
-//char * space_ptr = &space;
 sprintf(str, "\n%02d/%02d/%02d %c %02d:%02d:%02d \n", month, date, year, space, hours, minutes, seconds);
-//str[sizeof(str)-1] = '\0'; 
-//debug_printf("%s\r\n", str);
 
 }
 
@@ -101,18 +98,10 @@ int main(){
  LED_Initialize();
  LEDGreen_On();
  
- //Initializize bluetooth
- //init_uart(); 
- //NVIC_EnableIRQ(UART4_IRQn);
- 
  unsigned int j = 0;
  unsigned int speed = 0;
  float prevVelocity = 0;
  float unit_convert = 0.01*9.80665; //sets acceleration units to dm/s^2
- //unsigned int not_moving = 0; 	
-
- //Open file to edit
- //	FILE *f = fopen("C:\\Users\\Aasta\\Desktop\\Test\\test_project.txt", "a");	
 		
  while(1){
  
@@ -124,22 +113,14 @@ int main(){
  while(i < 500) {
    if(PIT->CHANNEL[0].TFLG == 1) {
     Accelerometer_GetState(&pState);
-   //ptrI2C -> Control (ARM_I2C_BUS_SPEED, ARM_I2C_BUS_SPEED_FAST); 
-   // debug_printf("%5d %5d %5d\r\n", pState.x, pState.y, pState.z); 
+
 	 
    sum += ((float)pState.x)*unit_convert + 3;
-		 //debug_printf("%5d\r\n", (int)x);
    i++;
-   //prevState = pState.x; 
    PIT -> CHANNEL[0].TFLG = 1;
     
   }
  }
-  
- // if(not_moving < 3) 
-  //else proc_data[j] = 0;  
-  
-  //if(proc_data[j] == prevVelocity) not_moving++; 
   
   proc_data[j] = sum/500 + prevVelocity; 
   prevVelocity = proc_data[j];
@@ -172,19 +153,12 @@ int main(){
  else if(proc_data[j] >= (SPEEDLIMIT+MARGIN)) {
    LEDRed_Toggle();
    speed++; }
- //debug_printf("%c\r\n", str); 
- 
- 
- //handle array size for processed data and timestamps
+
   }
-// debug_printf("%s %5d %5d %5d\r\n", proc_ts[j], (int) sum, speed, (int) proc_data[j]);
- 
-// fprintf(f, "%s %5.4f %5d %5.4f\r\n", proc_ts[j], sum, speed, proc_data[j]); 
 	
  if(j<180) j++;
  else j = 0;
   
  }
  
- //fclose(f); 
 }
